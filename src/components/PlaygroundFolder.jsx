@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { PlaygroundContext } from "../utils/PlaygroundProvider";
 
 const PlaygroundFolder = () => {
-  const folders = useContext(PlaygroundContext);
+  const { folders } = useContext(PlaygroundContext);
 
   return (
     <div>

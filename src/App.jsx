@@ -2,16 +2,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Playground from "./pages/Playground";
 import PlaygroundProvider from "./utils/PlaygroundProvider";
+import ModalProvider from "./utils/ModalProvider";
 
 const App = () => {
   return (
     <PlaygroundProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/playground" element={<Playground />} />
-        </Routes>
-      </BrowserRouter>
+      <ModalProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/playground" element={<Playground />} />
+          </Routes>
+        </BrowserRouter>
+      </ModalProvider>
     </PlaygroundProvider>
   );
 };

@@ -1,5 +1,12 @@
 import PlaygroundFolder from "../components/PlaygroundFolder";
+import Modal from "../components/Modal";
+import { useContext } from "react";
+import { ModalContext } from "../utils/ModalProvider";
 const Home = () => {
+  const modalFeature = useContext(ModalContext);
+  const openCreatePlayground = () => {
+    modalFeature.openModal("playground-modal");
+  };
   return (
     <div className="flex h-[100vh] w-[100vw] relative">
       {/* left component */}
@@ -11,7 +18,10 @@ const Home = () => {
           <p className="text-[#ecf0f1] font-normal text-md tracking-wide">
             Code, Compile and Debug
           </p>
-          <button className="bg-[#dce0e2] py-3 px-7 mt-5 rounded-full text-md tracking-wide flex items-center gap-3">
+          <button
+            onClick={openCreatePlayground}
+            className="bg-[#dce0e2] py-3 px-7 mt-5 rounded-full text-md tracking-wide flex items-center gap-3"
+          >
             <span>Create Playground</span>
             <span className="material-icons">add</span>
           </button>
@@ -36,6 +46,7 @@ const Home = () => {
           <PlaygroundFolder></PlaygroundFolder>
         </div>
       </div>
+      <Modal />
     </div>
   );
 };

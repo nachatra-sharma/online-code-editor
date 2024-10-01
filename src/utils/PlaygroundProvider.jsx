@@ -32,12 +32,22 @@ const initialData = [
 
 const PlaygroundProvider = ({ children }) => {
   const [folders, setFolders] = useState(initialData);
+
+  const createNewPlayground = (newPlayground) => {
+    console.log(newPlayground);
+  };
+
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(folders));
   }, [folders]);
 
+  const playgroundFeatures = {
+    folders,
+    createNewPlayground,
+  };
+
   return (
-    <PlaygroundContext.Provider value={folders}>
+    <PlaygroundContext.Provider value={playgroundFeatures}>
       {children}
     </PlaygroundContext.Provider>
   );
