@@ -1,5 +1,9 @@
 import { createContext, useState } from "react";
 export const ModalContext = createContext();
+export const modalConstants = {
+  "playground-modal": "playground-modal",
+  "create-folder": "create-folder",
+};
 const ModalProvider = ({ children }) => {
   const [modalType, setModalType] = useState(null);
 

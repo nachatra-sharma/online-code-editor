@@ -2,10 +2,14 @@ import PlaygroundFolder from "../components/PlaygroundFolder";
 import Modal from "../components/Modal";
 import { useContext } from "react";
 import { ModalContext } from "../utils/ModalProvider";
+import { modalConstants } from "../utils/ModalProvider";
 const Home = () => {
   const modalFeature = useContext(ModalContext);
   const openCreatePlayground = () => {
-    modalFeature.openModal("playground-modal");
+    modalFeature.openModal(modalConstants["playground-modal"]);
+  };
+  const openCreateNewFolderModal = () => {
+    modalFeature.openModal(modalConstants["create-folder"]);
   };
   return (
     <div className="flex h-[100vh] w-[100vw] relative">
@@ -37,7 +41,10 @@ const Home = () => {
                 <span className="font-normal">My</span> Playground
               </h1>
             </div>
-            <button className="flex flex-row items-center gap-2">
+            <button
+              className="flex flex-row items-center gap-2"
+              onClick={openCreateNewFolderModal}
+            >
               <span className="material-icons text-[1.2rem]">add</span>
               <span className="text-[1rem]">New Folder</span>
             </button>
