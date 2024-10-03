@@ -2,19 +2,20 @@ import { useContext } from "react";
 import { ModalContext } from "../utils/ModalProvider";
 import { PlaygroundContext } from "../utils/PlaygroundProvider";
 
-const CreateFolderModal = () => {
+const UpdateFileModal = () => {
   const modalFeature = useContext(ModalContext);
   const playgroundFeature = useContext(PlaygroundContext);
+
   const closeModal = () => {
     modalFeature.closeModal();
   };
+
   const onSubmitModal = (e) => {
     e.preventDefault();
-    const folderName = e.target.folderName.value;
-    if (folderName !== "") {
-      playgroundFeature.createNewFolder({
-        folderName,
-      });
+    const fileName = e.target.folderName.value;
+    const { id, folderId } = modalFeature.modalPayload;
+    if (fileName !== "") {
+      playgroundFeature.editFileName(id, fileName, folderId);
       closeModal();
     }
   };
@@ -26,7 +27,7 @@ const CreateFolderModal = () => {
       <div className="w-1/3 h-auto bg-[#fff] shadow-[0_35px_60px_-6px_rgba(150,150,150,0.1),0_-35px_60px_-6px_rgba(150,150,150,0.1),5px_0_40px_-6px_rgba(150,150,150,0.1),-35px_0_60px_-6px_rgba(150,150,150,0.1)] py-5 px-5 rounded-sm gap-7 flex flex-col">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-semibold">Create new folder</h1>
+            <h1 className="text-xl font-semibold">Edit the file name</h1>
           </div>
           <div className="flex items-center">
             <span
@@ -38,7 +39,7 @@ const CreateFolderModal = () => {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-sm">Enter Folder Name</p>
+          <p className="text-sm">Enter file Name</p>
           <input
             className="border-2 rounded-sm border-gray-800 px-2"
             type="text"
@@ -53,7 +54,7 @@ const CreateFolderModal = () => {
               type="submit"
               className="bg-gray-900 text-white py-2 px-4 rounded-sm text-sm tracking-wider"
             >
-              Create New Folder
+              Edit file
             </button>
           </div>
         </div>
@@ -62,4 +63,4 @@ const CreateFolderModal = () => {
   );
 };
 
-export default CreateFolderModal;
+export default UpdateFileModal;

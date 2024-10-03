@@ -49,7 +49,7 @@ const PlaygroundProvider = ({ children }) => {
   const [folders, setFolders] = useState(() => {
     const localData = localStorage.getItem("data");
     if (localData) {
-      console.log(localData);
+      // console.log(localData);
       return JSON.parse(localData);
     } else {
       return initialData;
@@ -87,6 +87,61 @@ const PlaygroundProvider = ({ children }) => {
     setFolders(allFolders);
   };
 
+  const deleteFolder = (id) => {
+    // to delete the folder with id
+    const updatedFoldersList = folders.filter((folderItem) => {
+      return folderItem.id !== id;
+    });
+    // update the local storage
+    localStorage.setItem("data", JSON.stringify(updatedFoldersList));
+    setFolders(updatedFoldersList);
+  };
+
+  const updateFolder = (id, name) => {
+    const updatedFoldersList = folders.map((folderItem) => {
+      if (folderItem.id === id) {
+        folderItem.title = name;
+      }
+      return folderItem;
+    });
+
+    localStorage.setItem("data", JSON.stringify(updatedFoldersList));
+    setFolders(updatedFoldersList);
+  };
+
+  const deleteFile = (id, folderId) => {
+    const copiedFolders = [...folders];
+    for (let i = 0; i < copiedFolders.length; i++) {
+      if (copiedFolders[i].id === folderId) {
+        const files = [...copiedFolders[i].files];
+        copiedFolders[i].files = files.filter((fileItem) => {
+          return fileItem.id !== id;
+        });
+      }
+    }
+    // console.log(copiedFolders);
+    localStorage.setItem("data", JSON.stringify(copiedFolders));
+    setFolders(copiedFolders);
+  };
+
+  const editFileName = (fileId, fileName, folderId) => {
+    const copiedFolders = [...folders];
+    for (let i = 0; i < copiedFolders.length; i++) {
+      if (folderId === copiedFolders[i].id) {
+        const files = copiedFolders[i].files;
+        for (let j = 0; j < files.length; j++) {
+          if (files[j].id === fileId) {
+            files[j].title = fileName;
+            break;
+          }
+        }
+        break;
+      }
+    }
+    localStorage.setItem("data", JSON.stringify(copiedFolders));
+    setFolders(copiedFolders);
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("data")) {
       localStorage.setItem("data", JSON.stringify(folders));
@@ -97,6 +152,10 @@ const PlaygroundProvider = ({ children }) => {
     folders,
     createNewPlayground,
     createNewFolder,
+    deleteFolder,
+    updateFolder,
+    deleteFile,
+    editFileName,
   };
 
   return (
