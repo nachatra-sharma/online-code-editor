@@ -2,8 +2,10 @@ import { useContext } from "react";
 import logo from "../assets/logo.svg";
 import { PlaygroundContext } from "../utils/PlaygroundProvider";
 import { modalConstants, ModalContext } from "../utils/ModalProvider";
+import { useNavigate } from "react-router-dom";
 
 const PlaygroundCard = ({ value, folderId }) => {
+  const navigate = useNavigate();
   const { deleteFile } = useContext(PlaygroundContext);
   const { openModal, setModalPayload } = useContext(ModalContext);
 
@@ -11,12 +13,20 @@ const PlaygroundCard = ({ value, folderId }) => {
     setModalPayload({ id, folderId });
     openModal(modalConstants["update-file"]);
   };
+
+  const navigateToPlaygroundScreen = () => {
+    navigate(`/playground/${value.id}/${folderId}`);
+  };
+
   return (
-    <div className="flex justify-between px-5 py-3 rounded-sm w-[47%] shadow-[0_35px_60px_-6px_rgba(150,150,150,0.1),0_-35px_60px_-6px_rgba(150,150,150,0.1),5px_0_40px_-6px_rgba(150,150,150,0.1),-35px_0_60px_-6px_rgba(150,150,150,0.1)] mb-3">
+    <div className="flex justify-between px-5 py-3 rounded-sm w-[47%] shadow-[0_35px_60px_-6px_rgba(150,150,150,0.1),0_-35px_60px_-6px_rgba(150,150,150,0.1),5px_0_40px_-6px_rgba(150,150,150,0.1),-35px_0_60px_-6px_rgba(150,150,150,0.1)] mb-3 cursor-pointer">
       <div className="flex items-center">
         <img src={logo} className="w-[50px] h-[50px] rounded-full" alt="logo" />
       </div>
-      <div className="flex flex-col gap-2 items-start">
+      <div
+        className="flex flex-col gap-2 items-start"
+        onClick={navigateToPlaygroundScreen}
+      >
         <p className="text-sm tracking-wide">{value.title}</p>
         <p className="text-sm tracking-wide">Language: {value.language}</p>
       </div>

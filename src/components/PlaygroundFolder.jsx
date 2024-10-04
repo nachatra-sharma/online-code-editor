@@ -12,6 +12,11 @@ const PlaygroundFolder = () => {
     openModal(modalConstants["update-folder"]);
   };
 
+  const openCreateNewPlayground = (id) => {
+    setModalPayload(id);
+    openModal(modalConstants["create-playground"]);
+  };
+
   return (
     <div>
       {/* create a playground nav */}
@@ -42,7 +47,13 @@ const PlaygroundFolder = () => {
                 >
                   edit
                 </span>
-                <button className="flex flex-row items-center gap-2 cursor-pointer">
+                <button
+                  className="flex flex-row items-center gap-2 cursor-pointer"
+                  onClick={() => {
+                    const id = data.id;
+                    openCreateNewPlayground(id);
+                  }}
+                >
                   <span className="material-icons text-[1.2rem]">add</span>
                   <span className="text-[1rem]">New Playground</span>
                 </button>

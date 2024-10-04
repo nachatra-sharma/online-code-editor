@@ -11,7 +11,10 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/playground" element={<Playground />} />
+            <Route
+              path="/playground/:fileId/:folderId"
+              element={<Playground />}
+            />
           </Routes>
         </BrowserRouter>
       </ModalProvider>

@@ -30,15 +30,15 @@ const initialData = [
   },
 ];
 
-const defaultCode = {
-  ["cpp"]: `#include <iostream>
+export const defaultCode = {
+  ["CPP"]: `#include <iostream>
       int main() {
       std::cout << "Try programiz.pro";
       return 0;
     }`,
-  ["javascript"]: `console.log("Hello world");`,
-  ["python"]: `print("hello python")`,
-  ["java"]: `class HelloWorld {
+  ["Javascript"]: `console.log("Hello world");`,
+  ["Python"]: `print("hello python")`,
+  ["Java"]: `class HelloWorld {
       public static void main(String[] args) {
           System.out.println("Try programiz.pro");
       }
@@ -49,7 +49,6 @@ const PlaygroundProvider = ({ children }) => {
   const [folders, setFolders] = useState(() => {
     const localData = localStorage.getItem("data");
     if (localData) {
-      // console.log(localData);
       return JSON.parse(localData);
     } else {
       return initialData;
@@ -88,11 +87,9 @@ const PlaygroundProvider = ({ children }) => {
   };
 
   const deleteFolder = (id) => {
-    // to delete the folder with id
     const updatedFoldersList = folders.filter((folderItem) => {
       return folderItem.id !== id;
     });
-    // update the local storage
     localStorage.setItem("data", JSON.stringify(updatedFoldersList));
     setFolders(updatedFoldersList);
   };
@@ -119,7 +116,7 @@ const PlaygroundProvider = ({ children }) => {
         });
       }
     }
-    // console.log(copiedFolders);
+
     localStorage.setItem("data", JSON.stringify(copiedFolders));
     setFolders(copiedFolders);
   };
@@ -142,6 +139,18 @@ const PlaygroundProvider = ({ children }) => {
     setFolders(copiedFolders);
   };
 
+  const createPlayground = (folderId, file) => {
+    const copiedFolders = [...folders];
+    for (let i = 0; i < copiedFolders.length; i++) {
+      if (copiedFolders[i].id === folderId) {
+        copiedFolders[i].files.push(file);
+        break;
+      }
+    }
+    localStorage.setItem("data", JSON.stringify(copiedFolders));
+    setFolders(copiedFolders);
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("data")) {
       localStorage.setItem("data", JSON.stringify(folders));
@@ -156,6 +165,7 @@ const PlaygroundProvider = ({ children }) => {
     updateFolder,
     deleteFile,
     editFileName,
+    createPlayground,
   };
 
   return (

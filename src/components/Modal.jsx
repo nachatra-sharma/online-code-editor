@@ -5,6 +5,8 @@ import { modalConstants } from "../utils/ModalProvider";
 import CreateFolderModal from "./CreateFolderModal";
 import UpdateFolderModal from "./UpdateFolderModal";
 import UpdateFileModal from "./UpdateFileModal";
+import CreatePlaygroundModal from "./CreatePlaygroundModal";
+
 const Modal = () => {
   const modalFeature = useContext(ModalContext);
   return (
@@ -20,6 +22,9 @@ const Modal = () => {
       )}
       {modalFeature.activeModal === modalConstants["update-file"] && (
         <UpdateFileModal />
+      )}
+      {modalFeature.activeModal === modalConstants["create-playground"] && (
+        <CreatePlaygroundModal />
       )}
     </>
   );

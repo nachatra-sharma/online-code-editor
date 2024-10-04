@@ -5,6 +5,7 @@ export const modalConstants = {
   "create-folder": "create-folder",
   "update-folder": "update-folder",
   "update-file": "udpate-file",
+  "create-playground": "create-playground",
 };
 
 const ModalProvider = ({ children }) => {
