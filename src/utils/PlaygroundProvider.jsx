@@ -3,6 +3,21 @@ import { v4 } from "uuid";
 
 export const PlaygroundContext = createContext();
 
+export const defaultCode = {
+  ["CPP"]: `#include <iostream>
+              int main() {
+              std::cout << "Hello World";
+              return 0;
+            }`,
+  ["Javascript"]: `console.log("Hello world");`,
+  ["Python"]: `print("hello python")`,
+  ["Java"]: `class HelloWorld {
+              public static void main(String[] args) {
+                System.out.println("Try programiz.pro");
+              }
+            }`,
+};
+
 const initialData = [
   {
     id: v4(),
@@ -12,7 +27,7 @@ const initialData = [
         id: v4(),
         title: "index",
         language: "cpp",
-        code: `cout<< "Hello World";`,
+        code: `${defaultCode["CPP"]}`,
       },
     ],
   },
@@ -24,26 +39,11 @@ const initialData = [
         id: v4(),
         title: "test",
         language: "javascript",
-        code: `console.log('hello world')`,
+        code: `${defaultCode["Javascript"]}`,
       },
     ],
   },
 ];
-
-export const defaultCode = {
-  ["CPP"]: `#include <iostream>
-      int main() {
-      std::cout << "Try programiz.pro";
-      return 0;
-    }`,
-  ["Javascript"]: `console.log("Hello world");`,
-  ["Python"]: `print("hello python")`,
-  ["Java"]: `class HelloWorld {
-      public static void main(String[] args) {
-          System.out.println("Try programiz.pro");
-      }
-  }`,
-};
 
 const PlaygroundProvider = ({ children }) => {
   const [folders, setFolders] = useState(() => {
@@ -66,7 +66,7 @@ const PlaygroundProvider = ({ children }) => {
           id: v4(),
           title: fileName,
           language: language,
-          code: defaultCode[language],
+          code: `${defaultCode[language]}`,
         },
       ],
     });
@@ -151,6 +151,49 @@ const PlaygroundProvider = ({ children }) => {
     setFolders(copiedFolders);
   };
 
+  const getDefaultCode = (fileId, folderId) => {
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].id === folderId) {
+        for (let j = 0; j < folders[i].files.length; j++) {
+          let currentFile = folders[i].files[j];
+          if (fileId === currentFile.id) {
+            return currentFile.code;
+          }
+        }
+      }
+    }
+  };
+
+  const getLanguage = (fileId, folderId) => {
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].id === folderId) {
+        for (let j = 0; j < folders[i].files.length; j++) {
+          let currentFile = folders[i].files[j];
+          if (fileId === currentFile.id) {
+            return currentFile.language;
+          }
+        }
+      }
+    }
+  };
+
+  const updateLanguage = (fileId, folderId, language) => {
+    const newFolders = [...folders];
+    for (let i = 0; i < newFolders.length; i++) {
+      if (newFolders[i].id === folderId) {
+        for (let j = 0; j < newFolders[i].files.length; j++) {
+          let currentFile = newFolders[i].files[j];
+          if (fileId === currentFile.id) {
+            newFolders[i].files[j].code = defaultCode[language];
+            newFolders[i].files[j].language = language;
+          }
+        }
+      }
+    }
+    localStorage.setItem("data", JSON.stringify(newFolders));
+    setFolders(newFolders);
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("data")) {
       localStorage.setItem("data", JSON.stringify(folders));
@@ -166,6 +209,9 @@ const PlaygroundProvider = ({ children }) => {
     deleteFile,
     editFileName,
     createPlayground,
+    getDefaultCode,
+    getLanguage,
+    updateLanguage,
   };
 
   return (
