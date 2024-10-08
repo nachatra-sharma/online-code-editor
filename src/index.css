@@ -12,3 +12,24 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.loader {
+  border-radius: 50%;
+  background-color: transparent;
+  border: 4px solid rgba(255, 68, 0, 0.308);
+  border-left-color: red;
+  animation-name: loader;
+  animation-delay: 0ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 700ms;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

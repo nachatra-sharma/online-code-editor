@@ -6,11 +6,12 @@ import { PlaygroundContext } from "../utils/PlaygroundProvider";
 const Playground = () => {
   const param = useParams();
   const { fileId, folderId } = param;
-  const { getDefaultCode, getLanguage, updateLanguage } =
+  const { getDefaultCode, getLanguage, updateLanguage, saveCode } =
     useContext(PlaygroundContext);
   const [code, setCode] = useState(() => {
     return getDefaultCode(fileId, folderId);
   });
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [theme, setTheme] = useState("vs-dark");
@@ -18,6 +19,7 @@ const Playground = () => {
     return getLanguage(fileId, folderId);
   });
   const codeRef = useRef(code);
+  const [showLoader, setShowLoader] = useState(false);
 
   const editorOptions = {
     wordWrap: "on",
@@ -28,6 +30,11 @@ const Playground = () => {
     javascript: "js",
     python: "py",
     java: "java",
+  };
+
+  const onSaveCode = () => {
+    saveCode(fileId, folderId, codeRef.current);
+    alert("Code saved successfully");
   };
 
   const onImportCode = (event) => {
@@ -57,6 +64,10 @@ const Playground = () => {
     } else {
       alert("please choose program file");
     }
+  };
+
+  const fullScreen = () => {
+    setIsFullScreen(!isFullScreen);
   };
 
   const onChangeLanguage = (e) => {
@@ -119,7 +130,10 @@ const Playground = () => {
       {/* code */}
       <div className="flex w-[100vw] h-[100vh] overflow-hidden">
         {/* editor */}
-        <div className="bg-gray-700 w-[65%]">
+        <div
+          className="bg-gray-700 w-[65%]"
+          style={isFullScreen ? styles.fullScreen : undefined}
+        >
           {/* header of editor */}
           <div className="w-full bg-white">
             <div className="w-[95%] mx-auto flex py-4 justify-between items-center">
@@ -131,7 +145,10 @@ const Playground = () => {
                   <span className="material-icons text-slate-700 text-md">
                     edit
                   </span>
-                  <button className="py-2 px-6 bg-slate-800 text-gray-200 text-sm tracking-wider rounded-full">
+                  <button
+                    className="py-2 px-6 bg-slate-800 text-gray-200 text-sm tracking-wider rounded-full"
+                    onClick={onSaveCode}
+                  >
                     Save Code
                   </button>
                 </div>
@@ -141,7 +158,7 @@ const Playground = () => {
                   <select
                     name="language"
                     onChange={(e) => onChangeLanguage(e)}
-                    value={language.toLowerCase()}
+                    value={language}
                     className="bg-transparent outline-none border-2 border-slate-700 px-2 rounded-sm py-1"
                   >
                     <option value="cpp">CPP</option>
@@ -181,10 +198,13 @@ const Playground = () => {
           <div className="w-full bg-white">
             <div className="w-[95%] mx-auto flex py-1 justify-between items-center">
               <div>
-                <div className="flex gap-3 items-center cursor-pointer">
+                <div
+                  className="flex gap-3 items-center cursor-pointer"
+                  onClick={fullScreen}
+                >
                   <i className="fa-solid fa-expand text-gray-700"></i>
                   <h1 className="text-gray-700 font-medium text-md">
-                    Full Screen
+                    {isFullScreen ? "Minimize" : "Full Screen"}
                   </h1>
                 </div>
               </div>
@@ -292,9 +312,25 @@ const Playground = () => {
             </div>
           </div>
         </div>
+        {showLoader && (
+          <div className="absolute w-[100%] h-[100%] bg-slate-800 flex justify-center items-center">
+            <div className="h-24 w-24 bg-orange-500 loader"></div>
+          </div>
+        )}
       </div>
     </>
   );
+};
+
+const styles = {
+  fullScreen: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 1000,
+  },
 };
 
 export default Playground;
